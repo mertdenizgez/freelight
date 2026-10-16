@@ -17,13 +17,15 @@ if test "$mode" = release; then
 fi
 build="build/$mode"
 rm -rf "$build/classes" "$build/dex"
-mkdir -p "$build/classes" "$build/dex"
+mkdir -p "$build/classes" "$build/dex" "$build/assets"
+cp ../docs/PRIVACY.md "$build/assets/privacy-policy.txt"
+if test "$mode" = release; then rm -f "$build/Freelight-release.apk" "$build/Freelight-release.aab"; fi
 python3 - "$mode" "$build/AndroidManifest.xml" <<'PY'
 import sys,xml.etree.ElementTree as E
 E.register_namespace('android','http://schemas.android.com/apk/res/android')
 tree=E.parse('AndroidManifest.xml');tree.getroot().find('application').set('{http://schemas.android.com/apk/res/android}debuggable','true' if sys.argv[1]=='debug' else 'false');tree.write(sys.argv[2],encoding='utf-8',xml_declaration=True)
 PY
-"$bt/aapt" package -f -M "$build/AndroidManifest.xml" -S res -I "$platform" -F "$build/unsigned.apk"
+"$bt/aapt" package -f -M "$build/AndroidManifest.xml" -S res -A "$build/assets" -I "$platform" -F "$build/unsigned.apk"
 javac -source 8 -target 8 -classpath "$platform" -d "$build/classes" src/local/ambilight/reader/*.java
 jar cf "$build/classes.jar" -C "$build/classes" .
 "$bt/d8" --lib "$platform" --output "$build/dex" "$build/classes.jar"
@@ -46,14 +48,14 @@ if test "$mode" = debug; then
 else
  # Compile resources with Google Maven AAPT2, then build the base module.
  "$FREELIGHT_AAPT2" compile --dir res -o "$build/compiled-res.zip"
- "$FREELIGHT_AAPT2" link --proto-format -o "$build/proto.apk" -I "$platform" --manifest "$build/AndroidManifest.xml" -R "$build/compiled-res.zip" --auto-add-overlay
+ "$FREELIGHT_AAPT2" link --proto-format -o "$build/proto.apk" -I "$platform" --manifest "$build/AndroidManifest.xml" -R "$build/compiled-res.zip" --auto-add-overlay -A "$build/assets"
  python3 - "$build" <<'PY'
 import pathlib,sys,zipfile,json
 root=pathlib.Path(sys.argv[1])
 with zipfile.ZipFile(root/'proto.apk') as proto,zipfile.ZipFile(root/'base.zip','w',zipfile.ZIP_DEFLATED) as base:
  for name in proto.namelist():
   if name=='AndroidManifest.xml':base.writestr('manifest/AndroidManifest.xml',proto.read(name))
-  elif name=='resources.pb' or name.startswith('res/'):base.writestr(name,proto.read(name))
+  elif name=='resources.pb' or name.startswith(('res/','assets/')):base.writestr(name,proto.read(name))
  for dex in (root/'dex').glob('classes*.dex'):base.write(dex,'dex/'+dex.name)
 (root/'BundleConfig.json').write_text(json.dumps({'optimizations':{'splitsConfig':{'splitDimension':[{'value':'LANGUAGE','negate':True}]}}}))
 PY

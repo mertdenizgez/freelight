@@ -34,4 +34,4 @@ Following a GitHub support/source link uses GitHub, which has its own privacy po
 
 ## Updates
 
-This policy must be updated if application behavior changes. A public hosted copy and an accurate Play Data safety declaration must be completed before store submission. This source document and the in-app privacy screen describe current behavior; they do not represent Google Play approval.
+This policy is updated when application behavior changes. The effective date identifies the current policy version.

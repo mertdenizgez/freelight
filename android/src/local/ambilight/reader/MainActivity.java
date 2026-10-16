@@ -141,7 +141,7 @@ public class MainActivity extends Activity {
         });});pinDialog.show();
     }
     private void showPrivacy(){
-        resetBulbPage();pageTitle.setText(s("privacy"));ScrollView scroll=new ScrollView(this);LinearLayout body=card();scroll.addView(body);content.addView(scroll,new LinearLayout.LayoutParams(-1,-1));body.addView(text(s("privacy"),24,Palette.INK));TextView policy=text(s("privacy_body"),16,Palette.INK);policy.setPadding(0,dp(20),0,dp(20));body.addView(policy);body.addView(text(Privacy.CONTACT,14,Palette.SECONDARY));
+        resetBulbPage();pageTitle.setText(s("privacy"));ScrollView scroll=new ScrollView(this);LinearLayout body=card();scroll.addView(body);content.addView(scroll,new LinearLayout.LayoutParams(-1,-1));body.addView(text(s("privacy"),24,Palette.INK));TextView policy=text(s("privacy_body"),16,Palette.INK);policy.setPadding(0,dp(20),0,dp(20));body.addView(policy);try(java.io.InputStream input=getAssets().open("privacy-policy.txt")){java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();byte[] buffer=new byte[1024];int n;while((n=input.read(buffer))!=-1){bytes.write(buffer,0,n);if(bytes.size()>32768)throw new java.io.IOException();}String full=new String(bytes.toByteArray(),java.nio.charset.StandardCharsets.UTF_8).replaceAll("(?m)^#{1,6} +","");body.addView(text(full,14,Palette.SECONDARY));}catch(Exception ignored){}body.addView(text(Privacy.CONTACT,14,Palette.SECONDARY));
     }
     private void showAbout(){new AlertDialog.Builder(this).setTitle("Freelight 0.12").setMessage(Privacy.LICENSE+"\n\n"+s("tv_intro")+"\n\n"+Privacy.CONTACT).setPositiveButton(s("close_menu"),null).show();}
 
