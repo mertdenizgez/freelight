@@ -1,0 +1,34 @@
+# Device credentials, signing material and local recordings
+/private/
+/data/
+**/pairing.json
+**/tv-pairing.json
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+
+# Generated files
+android/build/
+*.apk
+*.aab
+*.class
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/
+local.properties
+
+# Local prototype and historical device-session notes (not part of the public app)
+/app.py
+/Baslat.command
+/verification.json
+/android/BLUETOOTH-*.md
+/assets/GORSEL-NOTLARI-*.md
+/assets/freelight-bulb-photo.png
+/assets/freelight-room.png

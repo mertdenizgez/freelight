@@ -1,0 +1,14 @@
+<resources>
+<style name="FreelightTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+<item name="android:fontFamily">sans</item>
+<item name="android:colorAccent">#8A5D38</item>
+<item name="android:colorControlNormal">#8D7863</item>
+<item name="android:colorControlActivated">#8A5D38</item>
+<item name="android:colorButtonNormal">#DFD2C0</item>
+<item name="android:colorBackground">#F0EBE2</item>
+<item name="android:colorBackgroundFloating">#FCF9F3</item>
+<item name="android:windowBackground">#F0EBE2</item>
+<item name="android:textColorPrimary">#352D26</item>
+<item name="android:textColorSecondary">#75685B</item>
+</style>
+</resources>

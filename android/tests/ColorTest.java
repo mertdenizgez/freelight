@@ -1,0 +1,5 @@
+package local.ambilight.reader;
+public final class ColorTest {
+ static void check(int r,int g,int b,double x,double y){byte[] p=HueBleColor.xy(r,g,b);if(p.length!=4)throw new AssertionError();int a=(p[0]&255)|((p[1]&255)<<8),c=(p[2]&255)|((p[3]&255)<<8);if(Math.abs(a/65535.0-x)>.0001||Math.abs(c/65535.0-y)>.0001)throw new AssertionError(r+","+g+","+b+" -> "+a+","+c);}
+ public static void main(String[] args){if(HueBleColor.brightness(30,50,40,2)!=100||HueBleColor.brightness(127,0,0,2)!=254||HueBleColor.brightness(200,250,255,2)!=254||HueBleColor.brightness(0,0,0,2)!=0)throw new AssertionError("brightness multiplier/clamp");check(255,0,0,.6915,.3083);check(0,255,0,.17,.7);check(0,0,255,.1532,.0475);check(0,0,0,.3127,.3290);for(int r=0;r<=255;r+=17)for(int g=0;g<=255;g+=17)for(int b=0;b<=255;b+=17){byte[] p=HueBleColor.xy(r,g,b);double x=((p[0]&255)|((p[1]&255)<<8))/65535.0,y=((p[2]&255)|((p[3]&255)<<8))/65535.0;if(x<0||y<0||x+y>1.0001)throw new AssertionError();}System.out.println("BLE color checks passed: primary colors, little-endian packet, black, 4096 RGB samples");}
+}
