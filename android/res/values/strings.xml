@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV paired · synchronization stopped or waiting for fresh colors</string>
     <string name="tv_success">TV paired successfully. Continue by adding a Bluetooth bulb.</string>
     <string name="tv_verifying">Verifying PIN and Ambilight access…</string>
+    <string name="tv_overlay_enable">Allow PIN keypad</string>
+    <string name="tv_overlay_help">Allow Freelight to display a temporary keypad over the Philips PIN window. In system settings, enable display over other apps, return here and select Pair again. Use the remote to enter the visible code; do not close the Philips window. The keypad disappears after pairing, cancellation or expiry. This permission is not used during synchronization.</string>
 </resources>

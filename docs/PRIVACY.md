@@ -24,6 +24,8 @@ TV communication is restricted to the device’s own loopback and current local 
 
 Bluetooth permissions are used to discover, connect to and control compatible bulbs. On older Android versions, the platform requires location permission for Bluetooth discovery; Freelight does not use that permission to determine your physical location. Foreground-service and boot permissions support user-enabled synchronization and reconnection. There is no camera, microphone, accessibility-service or screen-capture permission.
 
+The optional display-over-other-apps permission is requested through Android settings for remote-only PIN entry. It displays a temporary Freelight keypad below the Philips PIN window; it does not read the TV window, capture its contents or fill the code automatically. The user enters the PIN with the remote. The keypad is removed on completion, cancellation or expiry and is not used during normal synchronization. The permission can be revoked in Android settings.
+
 ## Retention and deletion
 
 Preferences remain on the device until you change them, clear application data or uninstall. **TV connection → Forget TV** deletes the TV pairing and stops synchronization, while preserving bulb registrations. **Disconnect** disables automatic connection for that bulb but keeps its registration/settings. Clear Freelight’s application data in Android settings to remove all stored application data. No developer-held cloud copy exists to delete.

@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV emparelhado · sincronização parada ou cores em espera</string>
     <string name="tv_success">TV emparelhado. Continue adicionando uma lâmpada Bluetooth.</string>
     <string name="tv_verifying">A verificar o PIN e o acesso Ambilight…</string>
+    <string name="tv_overlay_enable">Permitir teclado PIN</string>
+    <string name="tv_overlay_help">Permita o teclado temporário sobre o código Philips nas definições do sistema, volte e repita o emparelhamento. Introduza o código com o comando sem fechar a janela Philips. O teclado desaparece ao concluir, cancelar ou expirar. Esta permissão não é usada durante a sincronização.</string>
 </resources>

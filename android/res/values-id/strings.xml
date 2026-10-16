@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV dipasangkan · sinkronisasi berhenti atau menunggu warna</string>
     <string name="tv_success">TV berhasil dipasangkan. Lanjutkan dengan menambah lampu Bluetooth.</string>
     <string name="tv_verifying">Memverifikasi PIN dan akses Ambilight…</string>
+    <string name="tv_overlay_enable">Izinkan papan tombol PIN</string>
+    <string name="tv_overlay_help">Izinkan papan tombol sementara di atas jendela PIN Philips melalui pengaturan sistem, kembali lalu pasangkan lagi. Masukkan kode dengan remote tanpa menutup jendela Philips. Papan tombol hilang setelah selesai, dibatalkan, atau kedaluwarsa. Izin ini tidak dipakai saat sinkronisasi.</string>
 </resources>

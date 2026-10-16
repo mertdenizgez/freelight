@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV vinculado · sincronización detenida o esperando colores</string>
     <string name="tv_success">TV vinculado. Continúa añadiendo una bombilla Bluetooth.</string>
     <string name="tv_verifying">Verificando PIN y acceso a Ambilight…</string>
+    <string name="tv_overlay_enable">Permitir teclado PIN</string>
+    <string name="tv_overlay_help">Permite el teclado temporal sobre el código Philips en los ajustes del sistema. Vuelve e inicia el emparejamiento otra vez. Introduce el código con el mando sin cerrar la ventana Philips. El teclado desaparece al terminar, cancelar o caducar. Este permiso no se usa durante la sincronización.</string>
 </resources>

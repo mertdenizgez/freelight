@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV associato · sincronizzazione ferma o colori in attesa</string>
     <string name="tv_success">TV associato. Continua aggiungendo una lampadina Bluetooth.</string>
     <string name="tv_verifying">Verifica PIN e accesso Ambilight…</string>
+    <string name="tv_overlay_enable">Consenti tastiera PIN</string>
+    <string name="tv_overlay_help">Consenti la tastiera temporanea sopra il codice Philips nelle impostazioni di sistema, poi torna e avvia nuovamente l’associazione. Inserisci il codice con il telecomando senza chiudere la finestra Philips. La tastiera scompare al termine, annullamento o scadenza. Questo permesso non è usato durante la sincronizzazione.</string>
 </resources>

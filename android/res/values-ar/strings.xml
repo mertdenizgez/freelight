@@ -113,4 +113,6 @@
     <string name="tv_status_wait">التلفاز مقترن · المزامنة متوقفة أو بانتظار الألوان</string>
     <string name="tv_success">تم اقتران التلفاز. تابع بإضافة مصباح Bluetooth.</string>
     <string name="tv_verifying">التحقق من الرمز والوصول إلى Ambilight…</string>
+    <string name="tv_overlay_enable">السماح بلوحة الرمز</string>
+    <string name="tv_overlay_help">اسمح بعرض لوحة مؤقتة فوق نافذة رمز Philips من إعدادات النظام، ثم عُد وأعد الاقتران. أدخل الرمز بجهاز التحكم دون إغلاق نافذة Philips. تختفي اللوحة بعد الاقتران أو الإلغاء أو انتهاء المهلة. لا يُستخدم هذا الإذن أثناء المزامنة.</string>
 </resources>

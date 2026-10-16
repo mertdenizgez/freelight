@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV parkopplad · synkronisering stoppad eller väntar på färger</string>
     <string name="tv_success">TV:n är parkopplad. Lägg nu till en Bluetooth-lampa.</string>
     <string name="tv_verifying">Kontrollerar PIN och Ambilight-åtkomst…</string>
+    <string name="tv_overlay_enable">Tillåt PIN-knappsats</string>
+    <string name="tv_overlay_help">Tillåt den tillfälliga knappsatsen ovanpå Philips PIN-fönster i systeminställningarna, gå tillbaka och parkoppla igen. Ange koden med fjärrkontrollen utan att stänga Philips-fönstret. Knappsatsen försvinner efter parkoppling, avbrott eller utgången tid. Behörigheten används inte under synkronisering.</string>
 </resources>

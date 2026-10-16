@@ -8,6 +8,9 @@ import java.io.InterruptedIOException;
 
 /** A PIN session lives only in RAM; a failed/cancelled attempt never replaces stored credentials. */
 public final class TvPairing implements AutoCloseable {
+    public static volatile String diagnostic="idle";
+    public static void noteFailure(Exception error){String stage=diagnostic.split("/",2)[0];diagnostic=stage+"/"+(error instanceof LocalTvApi.Failure?"HTTP_"+((LocalTvApi.Failure)error).code:error.getClass().getSimpleName());}
+
     private LocalTvApi api;
     private JSONObject device;
     private TvCredentials pending;
@@ -15,6 +18,7 @@ public final class TvPairing implements AutoCloseable {
     private volatile boolean cancelled;
 
     public void begin()throws Exception{
+        diagnostic="request";
         final LocalTvApi connection;
         final JSONObject identity=new JSONObject().put("id",UUID.randomUUID().toString().replace("-","")).put("device_name","Freelight TV").put("device_os","Android").put("app_id","local.ambilight.reader").put("app_name","Freelight").put("type","native");
         synchronized(this){if(cancelled)throw new InterruptedIOException();connection=new LocalTvApi("");api=connection;}
@@ -29,7 +33,7 @@ public final class TvPairing implements AutoCloseable {
         if(!"SUCCESS".equals(response.optString("error_id")))throw new java.io.IOException("Pairing unavailable");
         TvCredentials candidate=new TvCredentials(identity.getString("id"),response.getString("auth_key"),connection.certificate());
         long end=TvProtocol.deadline(SystemClock.elapsedRealtime(),response.getInt("timeout"));
-        synchronized(this){if(cancelled)throw new InterruptedIOException();pending=candidate;device=identity;timestamp=response.getLong("timestamp");deadline=end;}
+        synchronized(this){if(cancelled)throw new InterruptedIOException();pending=candidate;device=identity;timestamp=response.getLong("timestamp");deadline=end;diagnostic="PIN_ready";}
     }
 
     public void finish(Context context,String pin)throws Exception{
@@ -45,11 +49,13 @@ public final class TvPairing implements AutoCloseable {
             String host=api.host();api.close();connection=new LocalTvApi(candidate.fingerprint,host);api=connection;
         }
         JSONObject auth=new JSONObject().put("auth_AppId","1").put("pin",pin).put("auth_timestamp",issued).put("auth_signature",TvProtocol.signature(issued,pin));
+        diagnostic="grant";
         JSONObject response=connection.request("POST","/6/pair/grant",new JSONObject().put("auth",auth).put("device",identity),candidate);
         if(cancelled)throw new InterruptedIOException();
-        if(!"SUCCESS".equals(response.optString("error_id")))throw new IllegalArgumentException("PIN rejected");
+        if(!"SUCCESS".equals(response.optString("error_id"))){String code=response.optString("error_id");diagnostic="grant_"+(code.matches("[A-Z_]{1,40}")?code:"rejected");if(code.equals("TIMEOUT")){synchronized(this){deadline=SystemClock.elapsedRealtime();}}throw new IllegalArgumentException("PIN rejected");}
+        diagnostic="frame_check";
         TvFrame.validate(connection.request("GET","/6/ambilight/measured",null,candidate));
-        synchronized(this){if(cancelled)throw new InterruptedIOException();TvCredentials.save(context,candidate);}
+        synchronized(this){if(cancelled)throw new InterruptedIOException();TvCredentials.save(context,candidate);diagnostic="paired";}
         close();
     }
 

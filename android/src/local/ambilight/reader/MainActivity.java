@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
     private final Handler handler = new Handler();
     private final ExecutorService jobs = Executors.newSingleThreadExecutor();
     private HueClient hue;
-    private TextView tvStatus;private TvPairing tvPairing;private AlertDialog pinDialog;private Button pairButton;private boolean tvBusy;private int tvGeneration;private String tvMessage;
+    private TextView tvStatus;private TvPairing tvPairing;private PinOverlay pinOverlay;private Button pairButton;private boolean tvBusy;private int tvGeneration;private String tvMessage;
     private LinearLayout root, content;
     private TextView hueStatus, readiness, areaHint, pageTitle;
     private FrameLayout shell,drawerOverlay; private LinearLayout drawer; private Button menuButton,homeNavigation; private View beforeMenu; private boolean drawerOpen=false; private Bitmap roomBitmap,bulbBitmap;
@@ -123,23 +123,26 @@ public class MainActivity extends Activity {
         else if("auth".equals(ReaderService.connectionState))message=s("tv_status_auth");
         else message=s("tv_status_wait");
     }if(!message.contentEquals(tvStatus.getText()))tvStatus.setText(message);}
-    private void cancelTvPairing(){tvGeneration++;tvBusy=false;if(tvPairing!=null){tvPairing.close();tvPairing=null;}if(pinDialog!=null){pinDialog.dismiss();pinDialog=null;}}
+    private void cancelTvPairing(){tvGeneration++;tvBusy=false;if(tvPairing!=null){tvPairing.close();tvPairing=null;}if(pinOverlay!=null){pinOverlay.close();pinOverlay=null;}}
     private void beginTvPairing(){
-        if(tvBusy)return;cancelTvPairing();final int generation=tvGeneration;final TvPairing session=new TvPairing();tvPairing=session;tvBusy=true;tvMessage=s("tv_pairing");if(pairButton!=null)pairButton.setEnabled(false);renderTvStatus();
+        if(tvBusy)return;
+        if(!android.provider.Settings.canDrawOverlays(this)){
+            new AlertDialog.Builder(this).setTitle(s("tv_setup")).setMessage(s("tv_overlay_help")).setNegativeButton(s("cancel"),null).setPositiveButton(s("tv_overlay_enable"),(d,w)->{
+                try{startActivity(new Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION,android.net.Uri.parse("package:"+getPackageName())));}catch(ActivityNotFoundException e){tvMessage=s("tv_failed");renderTvStatus();}
+            }).show();return;
+        }
+        cancelTvPairing();final int generation=tvGeneration;final TvPairing session=new TvPairing();tvPairing=session;tvBusy=true;tvMessage=s("tv_pairing");if(pairButton!=null)pairButton.setEnabled(false);renderTvStatus();
         jobs.execute(()->{try{session.begin();handler.post(()->{if(destroyed||generation!=tvGeneration){session.close();return;}showTvPin(session,generation);});}
-        catch(Exception e){session.close();handler.post(()->{if(destroyed||generation!=tvGeneration)return;tvBusy=false;tvMessage=s("tv_failed");if(pairButton!=null)pairButton.setEnabled(true);renderTvStatus();});}});
+        catch(Exception e){TvPairing.noteFailure(e);session.close();handler.post(()->{if(destroyed||generation!=tvGeneration)return;tvBusy=false;tvMessage=s("tv_failed");if(pairButton!=null)pairButton.setEnabled(true);renderTvStatus();});}});
     }
     private void showTvPin(TvPairing session,int generation){
-        LinearLayout box=new LinearLayout(this);box.setOrientation(1);box.setPadding(dp(24),dp(8),dp(24),dp(12));box.addView(text(s("tv_pin_help"),16,Palette.INK));EditText pin=new EditText(this);pin.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_PASSWORD);pin.setSingleLine(true);pin.setHint(s("tv_pin_hint"));pin.setTextColor(Palette.INK);pin.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(4)});box.addView(pin,new LinearLayout.LayoutParams(-1,dp(54)));TextView error=text("",14,Palette.ACCENT);box.addView(error);
-        pinDialog=new AlertDialog.Builder(this).setTitle(s("tv_setup")).setView(box).setNegativeButton(s("cancel"),(d,w)->{cancelTvPairing();tvMessage=null;showTvSetup();}).setPositiveButton(s("tv_confirm"),null).create();pinDialog.setCanceledOnTouchOutside(false);
-        pinDialog.setOnCancelListener(d->{cancelTvPairing();tvMessage=null;showTvSetup();});pinDialog.setOnShowListener(d->{pin.requestFocus();Button confirm=pinDialog.getButton(AlertDialog.BUTTON_POSITIVE);confirm.setOnClickListener(v->{
-            String value=pin.getText().toString();if(!value.matches("[0-9]{4}")){error.setText(s("tv_pin_invalid"));return;}
-            if(session.remainingMillis()==0){error.setText(s("tv_expired"));confirm.setEnabled(false);return;}
-            confirm.setEnabled(false);pin.setEnabled(false);error.setText(s("tv_verifying"));
-            jobs.execute(()->{try{session.finish(getApplicationContext(),value);handler.post(()->{if(destroyed||generation!=tvGeneration)return;tvBusy=false;tvPairing=null;if(pinDialog!=null){pinDialog.dismiss();pinDialog=null;}tvMessage=s("tv_success");showTvSetup();handler.postDelayed(()->{if(!destroyed){tvMessage=null;renderTvStatus();}},5000);});}
-            catch(Exception e){handler.post(()->{if(destroyed||generation!=tvGeneration)return;error.setText(session.remainingMillis()==0?s("tv_expired"):s("tv_failed"));pin.setEnabled(true);confirm.setEnabled(session.remainingMillis()>0);});}});
-        });});pinDialog.show();
+        pinOverlay=new PinOverlay(this,session::remainingMillis,value->{
+            jobs.execute(()->{try{session.finish(getApplicationContext(),value);handler.post(()->{if(destroyed||generation!=tvGeneration)return;tvBusy=false;tvPairing=null;if(pinOverlay!=null){pinOverlay.close();pinOverlay=null;}tvMessage=s("tv_success");showTvSetup();handler.postDelayed(()->{if(!destroyed){tvMessage=null;renderTvStatus();}},5000);});}
+            catch(Exception e){TvPairing.noteFailure(e);handler.post(()->{if(destroyed||generation!=tvGeneration)return;if(session.remainingMillis()==0){cancelTvPairing();tvMessage=s("tv_expired");showTvSetup();}else if(pinOverlay!=null)pinOverlay.error(s("tv_failed"));});}});
+        },()->{cancelTvPairing();tvMessage=null;showTvSetup();},()->{cancelTvPairing();tvMessage=s("tv_expired");showTvSetup();});
+        try{pinOverlay.show();}catch(RuntimeException e){cancelTvPairing();tvMessage=s("tv_failed");showTvSetup();}
     }
+
     private void showPrivacy(){
         resetBulbPage();pageTitle.setText(s("privacy"));ScrollView scroll=new ScrollView(this);LinearLayout body=card();scroll.addView(body);content.addView(scroll,new LinearLayout.LayoutParams(-1,-1));body.addView(text(s("privacy"),24,Palette.INK));TextView policy=text(s("privacy_body"),16,Palette.INK);policy.setPadding(0,dp(20),0,dp(20));body.addView(policy);try(java.io.InputStream input=getAssets().open("privacy-policy.txt")){java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();byte[] buffer=new byte[1024];int n;while((n=input.read(buffer))!=-1){bytes.write(buffer,0,n);if(bytes.size()>32768)throw new java.io.IOException();}String full=new String(bytes.toByteArray(),java.nio.charset.StandardCharsets.UTF_8).replaceAll("(?m)^#{1,6} +","");body.addView(text(full,14,Palette.SECONDARY));}catch(Exception ignored){}body.addView(text(Privacy.CONTACT,14,Palette.SECONDARY));
     }

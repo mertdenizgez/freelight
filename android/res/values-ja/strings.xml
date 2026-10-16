@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TVペアリング済み・同期停止または色を待機中</string>
     <string name="tv_success">TVをペアリングしました。Bluetooth電球を追加してください。</string>
     <string name="tv_verifying">PINとAmbilightへのアクセスを確認中…</string>
+    <string name="tv_overlay_enable">PIN キーパッドを許可</string>
+    <string name="tv_overlay_help">システム設定で他のアプリの上に一時キーパッドを表示することを許可し、戻って再度ペアリングしてください。Philips の画面を閉じずに、表示されたコードをリモコンで入力します。完了、キャンセル、期限切れでキーパッドは消えます。同期中はこの権限を使用しません。</string>
 </resources>

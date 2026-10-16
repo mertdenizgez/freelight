@@ -60,7 +60,7 @@ Upper corner positions blend the relevant upper side region and top region with 
 | IKEA / Matter / Thread | Not implemented |
 | Screen/video capture | Not used; source compatibility depends on what the TV exposes through its Ambilight API |
 
-Version 0.12 adds **on-TV PIN pairing** and a TV connection page. New users do not need to transfer credentials with ADB. This new flow is covered by protocol/transaction tests; its physical-TV onboarding and upgrade validation is still pending. See [setup](docs/SETUP.md) and [store readiness](docs/STORE-READINESS.md).
+Version 0.12 adds **remote-only PIN pairing** and a TV connection page. A temporary keypad keeps the Philips PIN window visible; Android’s display-over-other-apps permission is requested explicitly for this setup step. Physical-TV tests verified pairing with a fresh TV identity, encrypted credential migration and live TV/Bluetooth synchronization. A clean-install first run and standby/reboot behavior remain to be tested. See [setup](docs/SETUP.md) and [store readiness](docs/STORE-READINESS.md).
 
 ## Getting started
 

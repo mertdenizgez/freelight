@@ -14,3 +14,5 @@ bash tests/fleet/run.sh
 bash tests/pairing/run.sh
 python3 tests/check-translations.py
 python3 tests/test-provisioning.py
+
+if test "${FREELIGHT_TRANSPORT_TESTS:-0}" = 1; then bash tests/transport/run.sh; fi

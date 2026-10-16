@@ -113,4 +113,6 @@
     <string name="tv_status_wait">ТВ сопряжён · синхронизация остановлена или ожидание цветов</string>
     <string name="tv_success">ТВ сопряжён. Продолжите, добавив Bluetooth-лампу.</string>
     <string name="tv_verifying">Проверка PIN и доступа к Ambilight…</string>
+    <string name="tv_overlay_enable">Разрешить клавиатуру PIN</string>
+    <string name="tv_overlay_help">В настройках системы разрешите временную клавиатуру поверх окна PIN Philips, затем вернитесь и повторите сопряжение. Введите код пультом, не закрывая окно Philips. Клавиатура исчезнет после сопряжения, отмены или истечения времени. Во время синхронизации это разрешение не используется.</string>
 </resources>

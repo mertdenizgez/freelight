@@ -113,7 +113,9 @@
     "tv_status_missing": "Pair this TV to get started.",
     "tv_status_wait": "TV paired · synchronization stopped or waiting for fresh colors",
     "tv_success": "TV paired successfully. Continue by adding a Bluetooth bulb.",
-    "tv_verifying": "Verifying PIN and Ambilight access…"
+    "tv_verifying": "Verifying PIN and Ambilight access…",
+    "tv_overlay_enable": "Allow PIN keypad",
+    "tv_overlay_help": "Allow Freelight to display a temporary keypad over the Philips PIN window. In system settings, enable display over other apps, return here and select Pair again. Use the remote to enter the visible code; do not close the Philips window. The keypad disappears after pairing, cancellation or expiry. This permission is not used during synchronization."
   },
   "tr": {
     "home": "Ana ekran",
@@ -229,7 +231,9 @@
     "tv_status_missing": "Başlamak için bu TV’yi eşleştirin.",
     "tv_status_wait": "TV eşleştirildi · aktarım kapalı veya güncel renkler bekleniyor",
     "tv_success": "TV eşleştirildi. Bluetooth ampul ekleyerek devam edin.",
-    "tv_verifying": "PIN ve Ambilight erişimi doğrulanıyor…"
+    "tv_verifying": "PIN ve Ambilight erişimi doğrulanıyor…",
+    "tv_overlay_enable": "PIN tuş takımına izin ver",
+    "tv_overlay_help": "Philips PIN penceresinin üzerinde geçici bir tuş takımı göstermek için izin verin. Sistem ayarlarında diğer uygulamaların üzerinde gösterme iznini açın, buraya dönüp yeniden eşleştirin. Görünen kodu kumandayla girin; Philips penceresini kapatmayın. Tuş takımı eşleştirme, iptal veya süre dolunca kaldırılır. Aktarım sırasında bu izin kullanılmaz."
   },
   "de": {
     "home": "Startseite",
@@ -345,7 +349,9 @@
     "tv_status_missing": "Zum Start diesen TV koppeln.",
     "tv_status_wait": "TV gekoppelt · Synchronisierung gestoppt oder Warten auf Farben",
     "tv_success": "TV erfolgreich gekoppelt. Jetzt eine Bluetooth-Lampe hinzufügen.",
-    "tv_verifying": "PIN und Ambilight-Zugriff werden geprüft…"
+    "tv_verifying": "PIN und Ambilight-Zugriff werden geprüft…",
+    "tv_overlay_enable": "PIN-Tastatur erlauben",
+    "tv_overlay_help": "Freelight benötigt eine temporäre Tastatur über dem Philips-PIN-Fenster. Anzeige über anderen Apps in den Systemeinstellungen erlauben, zurückkehren und erneut koppeln. Code mit der Fernbedienung eingeben; Philips-Fenster nicht schließen. Die Tastatur verschwindet nach Kopplung, Abbruch oder Ablauf. Beim Synchronisieren wird diese Berechtigung nicht verwendet."
   },
   "fr": {
     "home": "Accueil",
@@ -461,7 +467,9 @@
     "tv_status_missing": "Associez ce TV pour commencer.",
     "tv_status_wait": "TV associé · synchronisation arrêtée ou couleurs en attente",
     "tv_success": "TV associé. Continuez en ajoutant une ampoule Bluetooth.",
-    "tv_verifying": "Vérification du code et de l’accès Ambilight…"
+    "tv_verifying": "Vérification du code et de l’accès Ambilight…",
+    "tv_overlay_enable": "Autoriser le clavier PIN",
+    "tv_overlay_help": "Autorisez le clavier temporaire au-dessus du code Philips dans les paramètres système, puis revenez et relancez l’association. Saisissez le code avec la télécommande sans fermer la fenêtre Philips. Le clavier disparaît après association, annulation ou expiration. Cette autorisation ne sert pas pendant la synchronisation."
   },
   "es": {
     "home": "Inicio",
@@ -577,7 +585,9 @@
     "tv_status_missing": "Vincula este TV para comenzar.",
     "tv_status_wait": "TV vinculado · sincronización detenida o esperando colores",
     "tv_success": "TV vinculado. Continúa añadiendo una bombilla Bluetooth.",
-    "tv_verifying": "Verificando PIN y acceso a Ambilight…"
+    "tv_verifying": "Verificando PIN y acceso a Ambilight…",
+    "tv_overlay_enable": "Permitir teclado PIN",
+    "tv_overlay_help": "Permite el teclado temporal sobre el código Philips en los ajustes del sistema. Vuelve e inicia el emparejamiento otra vez. Introduce el código con el mando sin cerrar la ventana Philips. El teclado desaparece al terminar, cancelar o caducar. Este permiso no se usa durante la sincronización."
   },
   "it": {
     "home": "Home",
@@ -693,7 +703,9 @@
     "tv_status_missing": "Associa questo TV per iniziare.",
     "tv_status_wait": "TV associato · sincronizzazione ferma o colori in attesa",
     "tv_success": "TV associato. Continua aggiungendo una lampadina Bluetooth.",
-    "tv_verifying": "Verifica PIN e accesso Ambilight…"
+    "tv_verifying": "Verifica PIN e accesso Ambilight…",
+    "tv_overlay_enable": "Consenti tastiera PIN",
+    "tv_overlay_help": "Consenti la tastiera temporanea sopra il codice Philips nelle impostazioni di sistema, poi torna e avvia nuovamente l’associazione. Inserisci il codice con il telecomando senza chiudere la finestra Philips. La tastiera scompare al termine, annullamento o scadenza. Questo permesso non è usato durante la sincronizzazione."
   },
   "ru": {
     "home": "Главная",
@@ -809,7 +821,9 @@
     "tv_status_missing": "Для начала выполните сопряжение ТВ.",
     "tv_status_wait": "ТВ сопряжён · синхронизация остановлена или ожидание цветов",
     "tv_success": "ТВ сопряжён. Продолжите, добавив Bluetooth-лампу.",
-    "tv_verifying": "Проверка PIN и доступа к Ambilight…"
+    "tv_verifying": "Проверка PIN и доступа к Ambilight…",
+    "tv_overlay_enable": "Разрешить клавиатуру PIN",
+    "tv_overlay_help": "В настройках системы разрешите временную клавиатуру поверх окна PIN Philips, затем вернитесь и повторите сопряжение. Введите код пультом, не закрывая окно Philips. Клавиатура исчезнет после сопряжения, отмены или истечения времени. Во время синхронизации это разрешение не используется."
   },
   "ar": {
     "home": "الرئيسية",
@@ -925,7 +939,9 @@
     "tv_status_missing": "اقرن هذا التلفاز للبدء.",
     "tv_status_wait": "التلفاز مقترن · المزامنة متوقفة أو بانتظار الألوان",
     "tv_success": "تم اقتران التلفاز. تابع بإضافة مصباح Bluetooth.",
-    "tv_verifying": "التحقق من الرمز والوصول إلى Ambilight…"
+    "tv_verifying": "التحقق من الرمز والوصول إلى Ambilight…",
+    "tv_overlay_enable": "السماح بلوحة الرمز",
+    "tv_overlay_help": "اسمح بعرض لوحة مؤقتة فوق نافذة رمز Philips من إعدادات النظام، ثم عُد وأعد الاقتران. أدخل الرمز بجهاز التحكم دون إغلاق نافذة Philips. تختفي اللوحة بعد الاقتران أو الإلغاء أو انتهاء المهلة. لا يُستخدم هذا الإذن أثناء المزامنة."
   },
   "pt": {
     "home": "Início",
@@ -1041,7 +1057,9 @@
     "tv_status_missing": "Emparelhe este TV para começar.",
     "tv_status_wait": "TV emparelhado · sincronização parada ou cores em espera",
     "tv_success": "TV emparelhado. Continue adicionando uma lâmpada Bluetooth.",
-    "tv_verifying": "A verificar o PIN e o acesso Ambilight…"
+    "tv_verifying": "A verificar o PIN e o acesso Ambilight…",
+    "tv_overlay_enable": "Permitir teclado PIN",
+    "tv_overlay_help": "Permita o teclado temporário sobre o código Philips nas definições do sistema, volte e repita o emparelhamento. Introduza o código com o comando sem fechar a janela Philips. O teclado desaparece ao concluir, cancelar ou expirar. Esta permissão não é usada durante a sincronização."
   },
   "nl": {
     "home": "Start",
@@ -1157,7 +1175,9 @@
     "tv_status_missing": "Koppel deze TV om te beginnen.",
     "tv_status_wait": "TV gekoppeld · synchronisatie gestopt of wachten op kleuren",
     "tv_success": "TV gekoppeld. Voeg nu een Bluetooth-lamp toe.",
-    "tv_verifying": "Pincode en Ambilight-toegang controleren…"
+    "tv_verifying": "Pincode en Ambilight-toegang controleren…",
+    "tv_overlay_enable": "PIN-toetsenbord toestaan",
+    "tv_overlay_help": "Sta in de systeeminstellingen het tijdelijke toetsenbord boven het Philips-PIN-venster toe, keer terug en koppel opnieuw. Voer de code met de afstandsbediening in zonder het Philips-venster te sluiten. Het toetsenbord verdwijnt na koppelen, annuleren of verlopen. Deze toestemming wordt niet gebruikt bij synchronisatie."
   },
   "pl": {
     "home": "Start",
@@ -1273,7 +1293,9 @@
     "tv_status_missing": "Sparuj ten TV, aby rozpocząć.",
     "tv_status_wait": "TV sparowany · synchronizacja zatrzymana lub oczekiwanie na kolory",
     "tv_success": "TV sparowany. Dodaj teraz żarówkę Bluetooth.",
-    "tv_verifying": "Sprawdzanie PIN i dostępu Ambilight…"
+    "tv_verifying": "Sprawdzanie PIN i dostępu Ambilight…",
+    "tv_overlay_enable": "Zezwól na klawiaturę PIN",
+    "tv_overlay_help": "W ustawieniach systemu zezwól na tymczasową klawiaturę nad oknem PIN Philips, wróć i ponów parowanie. Wpisz kod pilotem bez zamykania okna Philips. Klawiatura zniknie po sparowaniu, anulowaniu lub upływie czasu. Uprawnienie nie jest używane podczas synchronizacji."
   },
   "uk": {
     "home": "Головна",
@@ -1389,7 +1411,9 @@
     "tv_status_missing": "Сполучіть цей ТВ для початку.",
     "tv_status_wait": "ТВ сполучено · синхронізацію зупинено або очікуються кольори",
     "tv_success": "ТВ сполучено. Додайте Bluetooth-лампу.",
-    "tv_verifying": "Перевірка PIN і доступу Ambilight…"
+    "tv_verifying": "Перевірка PIN і доступу Ambilight…",
+    "tv_overlay_enable": "Дозволити клавіатуру PIN",
+    "tv_overlay_help": "У налаштуваннях системи дозвольте тимчасову клавіатуру поверх вікна PIN Philips, поверніться та повторіть сполучення. Введіть код пультом, не закриваючи вікно Philips. Клавіатура зникне після сполучення, скасування або завершення часу. Під час синхронізації цей дозвіл не використовується."
   },
   "zh": {
     "home": "主页",
@@ -1505,7 +1529,9 @@
     "tv_status_missing": "请先配对此电视。",
     "tv_status_wait": "电视已配对 · 同步已停止或正在等待颜色",
     "tv_success": "电视配对成功。请继续添加蓝牙灯泡。",
-    "tv_verifying": "正在验证 PIN 和 Ambilight 访问权限…"
+    "tv_verifying": "正在验证 PIN 和 Ambilight 访问权限…",
+    "tv_overlay_enable": "允许 PIN 键盘",
+    "tv_overlay_help": "请在系统设置中允许在其他应用上层显示临时键盘，然后返回并重新配对。使用遥控器输入 Philips 窗口显示的代码，不要关闭该窗口。配对、取消或超时后键盘会消失。同步时不会使用此权限。"
   },
   "ja": {
     "home": "ホーム",
@@ -1621,7 +1647,9 @@
     "tv_status_missing": "このTVをペアリングして開始してください。",
     "tv_status_wait": "TVペアリング済み・同期停止または色を待機中",
     "tv_success": "TVをペアリングしました。Bluetooth電球を追加してください。",
-    "tv_verifying": "PINとAmbilightへのアクセスを確認中…"
+    "tv_verifying": "PINとAmbilightへのアクセスを確認中…",
+    "tv_overlay_enable": "PIN キーパッドを許可",
+    "tv_overlay_help": "システム設定で他のアプリの上に一時キーパッドを表示することを許可し、戻って再度ペアリングしてください。Philips の画面を閉じずに、表示されたコードをリモコンで入力します。完了、キャンセル、期限切れでキーパッドは消えます。同期中はこの権限を使用しません。"
   },
   "ko": {
     "home": "홈",
@@ -1737,7 +1765,9 @@
     "tv_status_missing": "시작하려면 이 TV를 페어링하세요.",
     "tv_status_wait": "TV 페어링됨 · 동기화 중지 또는 색상 대기 중",
     "tv_success": "TV 페어링 완료. Bluetooth 전구를 추가하세요.",
-    "tv_verifying": "PIN 및 Ambilight 접근 확인 중…"
+    "tv_verifying": "PIN 및 Ambilight 접근 확인 중…",
+    "tv_overlay_enable": "PIN 키패드 허용",
+    "tv_overlay_help": "시스템 설정에서 다른 앱 위에 임시 키패드를 표시하도록 허용한 후 돌아와 다시 페어링하세요. Philips 창을 닫지 말고 표시된 코드를 리모컨으로 입력하세요. 완료, 취소 또는 시간 만료 시 키패드가 사라집니다. 동기화 중에는 이 권한을 사용하지 않습니다."
   },
   "hi": {
     "home": "होम",
@@ -1853,7 +1883,9 @@
     "tv_status_missing": "शुरू करने के लिए इस TV को पेयर करें।",
     "tv_status_wait": "TV पेयर है · सिंक बंद या रंगों की प्रतीक्षा",
     "tv_success": "TV पेयर हो गया। अब Bluetooth बल्ब जोड़ें।",
-    "tv_verifying": "PIN और Ambilight पहुंच की जांच…"
+    "tv_verifying": "PIN और Ambilight पहुंच की जांच…",
+    "tv_overlay_enable": "PIN कीपैड की अनुमति दें",
+    "tv_overlay_help": "सिस्टम सेटिंग में दूसरे ऐप के ऊपर अस्थायी कीपैड दिखाने की अनुमति दें, फिर लौटकर दोबारा पेयर करें। Philips विंडो बंद किए बिना रिमोट से दिख रहा कोड दर्ज करें। पेयरिंग, रद्द करने या समय समाप्त होने पर कीपैड हट जाता है। सिंक के दौरान यह अनुमति इस्तेमाल नहीं होती।"
   },
   "id": {
     "home": "Beranda",
@@ -1969,7 +2001,9 @@
     "tv_status_missing": "Pasangkan TV ini untuk memulai.",
     "tv_status_wait": "TV dipasangkan · sinkronisasi berhenti atau menunggu warna",
     "tv_success": "TV berhasil dipasangkan. Lanjutkan dengan menambah lampu Bluetooth.",
-    "tv_verifying": "Memverifikasi PIN dan akses Ambilight…"
+    "tv_verifying": "Memverifikasi PIN dan akses Ambilight…",
+    "tv_overlay_enable": "Izinkan papan tombol PIN",
+    "tv_overlay_help": "Izinkan papan tombol sementara di atas jendela PIN Philips melalui pengaturan sistem, kembali lalu pasangkan lagi. Masukkan kode dengan remote tanpa menutup jendela Philips. Papan tombol hilang setelah selesai, dibatalkan, atau kedaluwarsa. Izin ini tidak dipakai saat sinkronisasi."
   },
   "sv": {
     "home": "Hem",
@@ -2085,6 +2119,8 @@
     "tv_status_missing": "Parkoppla denna TV för att börja.",
     "tv_status_wait": "TV parkopplad · synkronisering stoppad eller väntar på färger",
     "tv_success": "TV:n är parkopplad. Lägg nu till en Bluetooth-lampa.",
-    "tv_verifying": "Kontrollerar PIN och Ambilight-åtkomst…"
+    "tv_verifying": "Kontrollerar PIN och Ambilight-åtkomst…",
+    "tv_overlay_enable": "Tillåt PIN-knappsats",
+    "tv_overlay_help": "Tillåt den tillfälliga knappsatsen ovanpå Philips PIN-fönster i systeminställningarna, gå tillbaka och parkoppla igen. Ange koden med fjärrkontrollen utan att stänga Philips-fönstret. Knappsatsen försvinner efter parkoppling, avbrott eller utgången tid. Behörigheten används inte under synkronisering."
   }
 }

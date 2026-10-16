@@ -4,7 +4,7 @@ The application code is being prepared for Google Play on Android TV. Nothing in
 
 ## Implemented in this version
 
-- Native on-TV PIN pairing, without ADB, a manual IP address or a credential-file upload for new users.
+- Experimental native PIN pairing with a temporary, user-authorized overlay keypad for remote-only entry. Physical-TV re-pairing and permission access were verified on the tested Philips firmware.
 - A TV connection page, retry/re-pair controls, first-run routing and explicit Forget TV confirmation.
 - Candidate credentials committed only after the grant and a valid Ambilight frame; cancellation/expiry/errors preserve an existing pair.
 - Device-bound AES-GCM credential storage and migration from legacy private pairing.json.
@@ -18,11 +18,20 @@ The application code is being prepared for Google Play on Android TV. Nothing in
 
 Automated tests cover protocol vectors, expiry and failure/cancellation transaction behavior using simulated TV responses. A clean release bundle is validated with bundletool. These tests do not prove that every Philips firmware displays/accepts the PIN or that Android Keystore migration works on every physical device. Hardware onboarding and upgrade tests must be recorded before production submission.
 
+## Physical-TV validation so far
+
+On Philips 65OLED810/12, the 0.11 → 0.12 development update retained bulb name, position, brightness and automatic connection preferences. Legacy credentials migrated to an encrypted no-backup envelope and the old plaintext file was removed. Subsequent app updates read the encrypted pair successfully. Live TV reading and Bluetooth synchronization resumed with no new reader/BLE errors during checks.
+
+The original modal PIN input was covered by the Philips activity. Waiting for that activity to expire, closing it with the physical remote, and reordering Freelight to the foreground returned the TV’s explicit TIMEOUT response. The replacement `TYPE_APPLICATION_OVERLAY` keypad keeps the Philips activity visible. The user enabled its permission in Android settings, entered the PIN with the physical remote without closing the Philips window, and confirmed success. The app reported `paired`, replaced the encrypted credential envelope and continued reading RGB and controlling the bulb. The temporary keypad was removed. After a process stop/relaunch, the encrypted new pair loaded successfully and RGB/Bluetooth synchronization resumed automatically with no reader/BLE errors observed. Bulb registration, custom name, left position, 2× brightness and automatic preference remained unchanged. This verifies a fresh authenticated identity through re-pairing on an existing installation; a clean-install first run is still unverified.
+
+A POST Digest retry originally encountered EOF; the transport now retries POST authentication on a fresh connection, covered by a real local TLS regression test. Working old pairing was preserved throughout unsuccessful PIN attempts. No TV authentication keys or PIN screenshots are included in the repository or release artifacts.
+
 ## Still required before store submission
 
-- Test new-user PIN pairing, incorrect PIN, cancellation, existing-install migration, bulb tracking, standby/wake and reboot on the physical Philips TV. Broader firmware/model coverage remains unverified.
+- Test a clean-install first run, incorrect-PIN/cancellation behavior through the new keypad, standby/wake and full TV reboot on physical hardware. Existing-install migration, fresh-identity re-pairing and live single-bulb tracking have passed. Broader firmware/model coverage and simultaneous physical bulbs remain unverified.
 - Choose the final package identity before the first Play upload. Current identity remains `local.ambilight.reader` to preserve development installations.
 - Create and securely retain an upload key; configure Play App Signing. No production signing key is generated or committed by this change.
+- Review the special overlay permission and its disclosed, setup-only use against current Play policy; verify the system permission screen is reachable using a TV remote.
 - Publish the privacy policy at a stable public URL and complete the Data safety, content rating, app access and foreground-service declarations.
 - Create/review the store description, TV banner, icon and unaltered TV screenshots. State the supported hardware explicitly.
 - Supply reviewer instructions for the hardware-dependent setup. No developer-owned TV credentials should be supplied as a substitute for pairing the reviewer’s hardware.
@@ -30,6 +39,8 @@ Automated tests cover protocol vectors, expiry and failure/cancellation transact
 
 ## Reference documentation
 
+- [Overlay permission and user approval](https://developer.android.com/reference/android/provider/Settings#canDrawOverlays(android.content.Context))
+- [Play permission policy](https://support.google.com/googleplay/android-developer/answer/16558241)
 - [TV distribution](https://developer.android.com/training/tv/publishing/distribute)
 - [TV quality](https://developer.android.com/docs/quality-guidelines/tv-app-quality)
 - [Connected-device foreground service](https://developer.android.com/develop/background-work/services/fgs/service-types#connected-device)

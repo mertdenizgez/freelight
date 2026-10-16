@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV gekoppeld · synchronisatie gestopt of wachten op kleuren</string>
     <string name="tv_success">TV gekoppeld. Voeg nu een Bluetooth-lamp toe.</string>
     <string name="tv_verifying">Pincode en Ambilight-toegang controleren…</string>
+    <string name="tv_overlay_enable">PIN-toetsenbord toestaan</string>
+    <string name="tv_overlay_help">Sta in de systeeminstellingen het tijdelijke toetsenbord boven het Philips-PIN-venster toe, keer terug en koppel opnieuw. Voer de code met de afstandsbediening in zonder het Philips-venster te sluiten. Het toetsenbord verdwijnt na koppelen, annuleren of verlopen. Deze toestemming wordt niet gebruikt bij synchronisatie.</string>
 </resources>

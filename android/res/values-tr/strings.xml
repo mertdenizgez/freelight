@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV eşleştirildi · aktarım kapalı veya güncel renkler bekleniyor</string>
     <string name="tv_success">TV eşleştirildi. Bluetooth ampul ekleyerek devam edin.</string>
     <string name="tv_verifying">PIN ve Ambilight erişimi doğrulanıyor…</string>
+    <string name="tv_overlay_enable">PIN tuş takımına izin ver</string>
+    <string name="tv_overlay_help">Philips PIN penceresinin üzerinde geçici bir tuş takımı göstermek için izin verin. Sistem ayarlarında diğer uygulamaların üzerinde gösterme iznini açın, buraya dönüp yeniden eşleştirin. Görünen kodu kumandayla girin; Philips penceresini kapatmayın. Tuş takımı eşleştirme, iptal veya süre dolunca kaldırılır. Aktarım sırasında bu izin kullanılmaz.</string>
 </resources>

@@ -44,7 +44,7 @@ public class LocalTvApi implements AutoCloseable {
     public JSONObject request(String method,String path,JSONObject json,TvCredentials credentials)throws Exception{
         if(!path.equals("/6/pair/request")&&!path.equals("/6/pair/grant")&&!path.equals("/6/ambilight/measured"))throw new IllegalArgumentException("Unsupported TV endpoint");
         byte[] body=json==null?null:json.toString().getBytes(StandardCharsets.UTF_8);
-        try{Response r=exchange(method,path,body,null);if(r.code==401&&credentials!=null){String auth=TvProtocol.digest(r.headers.get("www-authenticate"),method,path,credentials.user,credentials.key,UUID.randomUUID().toString().replace("-",""));r=exchange(method,path,body,auth);}if(r.code!=200)throw new Failure(r.code);return new JSONObject(new String(r.body,StandardCharsets.UTF_8));}
+        try{Response r=exchange(method,path,body,null);if(r.code==401&&credentials!=null){String auth=TvProtocol.digest(r.headers.get("www-authenticate"),method,path,credentials.user,credentials.key,UUID.randomUUID().toString().replace("-",""));if(body!=null)reset();r=exchange(method,path,body,auth);}if(r.code!=200)throw new Failure(r.code);return new JSONObject(new String(r.body,StandardCharsets.UTF_8));}
         catch(Exception e){reset();attempt++;throw e;}
     }
 }

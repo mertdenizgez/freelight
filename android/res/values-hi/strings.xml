@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV पेयर है · सिंक बंद या रंगों की प्रतीक्षा</string>
     <string name="tv_success">TV पेयर हो गया। अब Bluetooth बल्ब जोड़ें।</string>
     <string name="tv_verifying">PIN और Ambilight पहुंच की जांच…</string>
+    <string name="tv_overlay_enable">PIN कीपैड की अनुमति दें</string>
+    <string name="tv_overlay_help">सिस्टम सेटिंग में दूसरे ऐप के ऊपर अस्थायी कीपैड दिखाने की अनुमति दें, फिर लौटकर दोबारा पेयर करें। Philips विंडो बंद किए बिना रिमोट से दिख रहा कोड दर्ज करें। पेयरिंग, रद्द करने या समय समाप्त होने पर कीपैड हट जाता है। सिंक के दौरान यह अनुमति इस्तेमाल नहीं होती।</string>
 </resources>

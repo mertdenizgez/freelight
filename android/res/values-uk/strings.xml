@@ -113,4 +113,6 @@
     <string name="tv_status_wait">ТВ сполучено · синхронізацію зупинено або очікуються кольори</string>
     <string name="tv_success">ТВ сполучено. Додайте Bluetooth-лампу.</string>
     <string name="tv_verifying">Перевірка PIN і доступу Ambilight…</string>
+    <string name="tv_overlay_enable">Дозволити клавіатуру PIN</string>
+    <string name="tv_overlay_help">У налаштуваннях системи дозвольте тимчасову клавіатуру поверх вікна PIN Philips, поверніться та повторіть сполучення. Введіть код пультом, не закриваючи вікно Philips. Клавіатура зникне після сполучення, скасування або завершення часу. Під час синхронізації цей дозвіл не використовується.</string>
 </resources>

@@ -49,3 +49,9 @@ bash android/tests/run.sh
 ```
 
 Keep every language complete and preserve positional formatting tokens. Native-speaker review is welcome.
+
+## Optional local TLS/HTTP regression test
+
+`bash android/tests/transport/run.sh` runs the real production transport against a temporary TLS server bound only to 127.0.0.1:1926. It needs permission to open that local port, which must be free. A temporary self-signed test key is generated and removed automatically. Set `FREELIGHT_TRANSPORT_TESTS=1` when running the host suite to include it.
+
+This covers GET Digest keep-alive, fresh-connection POST Digest retries with unchanged bodies, oversized response rejection, certificate-pin mismatch and the endpoint allowlist. Its JSON double carries raw bodies; JSON parsing and real TV firmware behavior are not simulated by this test.

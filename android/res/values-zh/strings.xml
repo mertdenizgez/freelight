@@ -113,4 +113,6 @@
     <string name="tv_status_wait">电视已配对 · 同步已停止或正在等待颜色</string>
     <string name="tv_success">电视配对成功。请继续添加蓝牙灯泡。</string>
     <string name="tv_verifying">正在验证 PIN 和 Ambilight 访问权限…</string>
+    <string name="tv_overlay_enable">允许 PIN 键盘</string>
+    <string name="tv_overlay_help">请在系统设置中允许在其他应用上层显示临时键盘，然后返回并重新配对。使用遥控器输入 Philips 窗口显示的代码，不要关闭该窗口。配对、取消或超时后键盘会消失。同步时不会使用此权限。</string>
 </resources>

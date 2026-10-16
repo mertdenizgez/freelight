@@ -2,14 +2,15 @@
 
 ## 0.12
 
-- Added native on-TV PIN pairing and explicit TV connection controls.
+- Added experimental native on-TV PIN pairing and explicit TV connection controls. A temporary, user-authorized overlay keypad supports remote-only PIN entry without closing the Philips activity; physical-remote re-pairing passed on Philips 65OLED810/12.
 - Added encrypted TV credential storage, legacy migration and local certificate pinning.
 - Preserved working credentials during failed, cancelled or expired pairing attempts.
 - Added privacy/About screens and 27 new strings in each of the 18 languages.
 - Switched the foreground service to the connected-device type with permission gating.
 - Hid the unfinished Bridge workflow and added separate debug/release APK/AAB builds.
 - Added protocol vectors, pairing transaction tests, a privacy policy and store-readiness documentation.
-- Physical-TV onboarding, migration and wake/reboot verification remain pending for this version.
+- Verified existing-install encrypted migration and live TV/BLE resumption on the Philips TV. Fresh-identity PIN re-pairing passed with the temporary keypad; clean-install onboarding and standby/reboot verification remain pending.
+- Retry POST Digest authentication over a fresh connection; add real local TLS/HTTP regression coverage and respect server-reported PIN timeout.
 
 ## 0.11
 

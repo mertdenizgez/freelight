@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV 페어링됨 · 동기화 중지 또는 색상 대기 중</string>
     <string name="tv_success">TV 페어링 완료. Bluetooth 전구를 추가하세요.</string>
     <string name="tv_verifying">PIN 및 Ambilight 접근 확인 중…</string>
+    <string name="tv_overlay_enable">PIN 키패드 허용</string>
+    <string name="tv_overlay_help">시스템 설정에서 다른 앱 위에 임시 키패드를 표시하도록 허용한 후 돌아와 다시 페어링하세요. Philips 창을 닫지 말고 표시된 코드를 리모컨으로 입력하세요. 완료, 취소 또는 시간 만료 시 키패드가 사라집니다. 동기화 중에는 이 권한을 사용하지 않습니다.</string>
 </resources>

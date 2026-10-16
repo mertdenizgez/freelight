@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV sparowany · synchronizacja zatrzymana lub oczekiwanie na kolory</string>
     <string name="tv_success">TV sparowany. Dodaj teraz żarówkę Bluetooth.</string>
     <string name="tv_verifying">Sprawdzanie PIN i dostępu Ambilight…</string>
+    <string name="tv_overlay_enable">Zezwól na klawiaturę PIN</string>
+    <string name="tv_overlay_help">W ustawieniach systemu zezwól na tymczasową klawiaturę nad oknem PIN Philips, wróć i ponów parowanie. Wpisz kod pilotem bez zamykania okna Philips. Klawiatura zniknie po sparowaniu, anulowaniu lub upływie czasu. Uprawnienie nie jest używane podczas synchronizacji.</string>
 </resources>

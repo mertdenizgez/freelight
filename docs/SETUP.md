@@ -1,6 +1,6 @@
 # Installation and first-run setup
 
-Freelight 0.12 adds on-TV PIN pairing. Normal first-time setup no longer needs a computer, a typed IP address, a cloud account or an uploaded credential file.
+Freelight 0.12 supports TV-remote PIN entry through a temporary keypad. Physical testing on Philips 65OLED810/12 verified re-pairing with fresh credentials, encrypted legacy migration and live TV/Bluetooth operation. A clean-install first run and standby/reboot still require verification.
 
 ## Requirements
 
@@ -12,9 +12,11 @@ Freelight 0.12 adds on-TV PIN pairing. Normal first-time setup no longer needs a
 
 1. Open Freelight. An unpaired installation opens **TV connection**.
 2. Select **Pair this TV**. The app contacts only this device’s own local TV API; no manual IP is needed.
-3. Read the TV’s four-digit PIN and enter it into Freelight. If a TV overlay covers the app, return to Freelight without cancelling the TV pairing. Confirm before the PIN session expires.
-4. The app verifies authorization and Ambilight color access before saving the pair. An incorrect PIN, expired session, cancelled attempt or unsupported color API does not replace existing credentials.
-5. Choose **Add a Bluetooth bulb**, grant Bluetooth permissions, scan, select a compatible bulb, set its position/brightness, and choose **Save and connect**.
+3. Approve the explanation for the temporary PIN keypad. In Android’s **Display over other apps** settings, allow Freelight, then return and select **Pair this TV** again. This is a one-time permission grant and can be revoked later. It is not used during normal synchronization.
+4. Keep the Philips PIN window open. Use the remote’s arrows/OK on the Freelight keypad at the bottom of the screen, or its numeric keys, to enter the four-digit code. Select **Confirm PIN** before the TV’s countdown ends. **Do not press Close in the Philips window**: on the tested firmware, closing it before entering the PIN returned `TIMEOUT`.
+5. The keypad is removed after successful pairing, cancellation or expiry.
+6. The app verifies authorization and Ambilight color access before saving the pair. An incorrect PIN, expired session, cancelled attempt or unsupported color API does not replace existing credentials.
+7. Choose **Add a Bluetooth bulb**, grant Bluetooth permissions, scan, select a compatible bulb, set its position/brightness, and choose **Save and connect**.
 
 The physical TV’s PIN flow and firmware support must still be validated for each supported hardware/firmware combination. Do not claim universal Philips compatibility from successful compilation or simulated tests.
 
@@ -50,6 +52,7 @@ The old `tools/provision-tv.py` is retained only for legacy/debug experiments. I
 
 ## Troubleshooting
 
+- Keypad permission unavailable: open Android settings → Apps → Special app access → Display over other apps. If Freelight is unavailable there, report the model/firmware; remote-only onboarding is not verified for that firmware. Do not close the Philips PIN window to reach an obscured input.
 - No PIN/service: verify Philips model/firmware compatibility and local API availability. Other Android TVs do not automatically expose Philips Ambilight.
 - Wrong/expired PIN: cancel and pair again. Your previous working pairing is preserved.
 - Authorization rejected or TV certificate changed: re-pair through the TV connection page.

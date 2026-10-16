@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV gekoppelt · Synchronisierung gestoppt oder Warten auf Farben</string>
     <string name="tv_success">TV erfolgreich gekoppelt. Jetzt eine Bluetooth-Lampe hinzufügen.</string>
     <string name="tv_verifying">PIN und Ambilight-Zugriff werden geprüft…</string>
+    <string name="tv_overlay_enable">PIN-Tastatur erlauben</string>
+    <string name="tv_overlay_help">Freelight benötigt eine temporäre Tastatur über dem Philips-PIN-Fenster. Anzeige über anderen Apps in den Systemeinstellungen erlauben, zurückkehren und erneut koppeln. Code mit der Fernbedienung eingeben; Philips-Fenster nicht schließen. Die Tastatur verschwindet nach Kopplung, Abbruch oder Ablauf. Beim Synchronisieren wird diese Berechtigung nicht verwendet.</string>
 </resources>

@@ -113,4 +113,6 @@
     <string name="tv_status_wait">TV associé · synchronisation arrêtée ou couleurs en attente</string>
     <string name="tv_success">TV associé. Continuez en ajoutant une ampoule Bluetooth.</string>
     <string name="tv_verifying">Vérification du code et de l’accès Ambilight…</string>
+    <string name="tv_overlay_enable">Autoriser le clavier PIN</string>
+    <string name="tv_overlay_help">Autorisez le clavier temporaire au-dessus du code Philips dans les paramètres système, puis revenez et relancez l’association. Saisissez le code avec la télécommande sans fermer la fenêtre Philips. Le clavier disparaît après association, annulation ou expiration. Cette autorisation ne sert pas pendant la synchronisation.</string>
 </resources>
