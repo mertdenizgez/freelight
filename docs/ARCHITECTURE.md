@@ -6,7 +6,7 @@
 
 The latest frame is held in RAM. The Android app does not record frame history. It stores only credentials, bulb/session preferences and saved previous-light values. Old frame-log files from earlier prototypes are cleaned up on service creation.
 
-The TLS implementation trusts the TV’s self-signed certificate without verification. This is a known development limitation, not certificate pinning or an authenticated trust-store setup.
+`LocalTvApi` restricts TLS to this device’s own loopback/local IPv4 addresses. The local self-signed certificate fingerprint is stored after PIN pairing (or a successful legacy authenticated read) and checked on subsequent connections. `TvCredentials` uses Android Keystore AES-GCM and atomic private no-backup storage. `TvPairing` commits candidate credentials only after grant plus RGB validation.
 
 ## Per-bulb control
 
@@ -26,7 +26,7 @@ Confirmed power/brightness state drives the UI’s on/off appearance. The bulb i
 
 ## Bridge boundary
 
-`HueClient` supports local Bridge discovery/pairing-related configuration and Entertainment area retrieval. There is no DTLS Entertainment stream connecting the reader to that Bridge configuration. The UI is preparation for future work, not a second working light-output backend.
+`HueClient` supports local Bridge discovery/pairing-related configuration and Entertainment area retrieval. There is no DTLS Entertainment stream connecting the reader to that Bridge configuration. The incomplete workflow is hidden from the 0.12 UI.
 
 ## Useful source files
 

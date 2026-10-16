@@ -12,6 +12,6 @@ Before the first upload:
 
 The package ID remains `local.ambilight.reader` for compatibility with the existing development installation. Renaming the display name to Freelight did not migrate the package ID. Changing it would create a separate application with separate data.
 
-Known work before broader distribution: integrated TV pairing, release signing/provisioning design, more firmware/model testing, real multi-bulb testing, and Bridge streaming if that backend is pursued.
+See [STORE-READINESS.md](STORE-READINESS.md) for completed code preparation and remaining hardware, signing and store-console work. PIN pairing and release AAB generation are implemented; physical-TV validation for 0.12 remains pending.
 
 The room and bulb raster assets were generated for this project using an image-generation tool. The editable SVG logo and native Android drawable resources are bundled. No external image download is needed during app operation. Trademark ownership remains with the respective brands; the app is independent.
