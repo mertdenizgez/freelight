@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
     private final Handler handler = new Handler();
     private final ExecutorService jobs = Executors.newSingleThreadExecutor();
     private HueClient hue;
+    private TextView tvStatus;private TvPairing tvPairing;private AlertDialog pinDialog;private Button pairButton;private boolean tvBusy;private int tvGeneration;private String tvMessage;
     private LinearLayout root, content;
     private TextView hueStatus, readiness, areaHint, pageTitle;
     private FrameLayout shell,drawerOverlay; private LinearLayout drawer; private Button menuButton,homeNavigation; private View beforeMenu; private boolean drawerOpen=false; private Bitmap roomBitmap,bulbBitmap;
@@ -59,8 +60,8 @@ public class MainActivity extends Activity {
         ImageView logo=new ImageView(this);logo.setImageResource(getResources().getIdentifier("freelight_icon","drawable",getPackageName()));LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(dp(32),dp(32));lp.rightMargin=dp(8);header.addView(logo,lp);
         header.addView(text("Freelight",23,Palette.INK),new LinearLayout.LayoutParams(0,dp(40),1));pageTitle=text(s("home"),14,Palette.SECONDARY);header.addView(pageTitle);root.addView(header);
         content=new LinearLayout(this);content.setOrientation(1);LinearLayout.LayoutParams cp=new LinearLayout.LayoutParams(-1,0,1);cp.topMargin=dp(10);root.addView(content,cp);
-        buildDrawer();setContentView(shell);if(getIntent().getBooleanExtra("show_app_settings",false)){getIntent().removeExtra("show_app_settings");showSettings();}else showLive();
-        if (getSharedPreferences("settings", 0).getBoolean("enabled", false)) startForegroundService(new Intent(this, ReaderService.class));
+        buildDrawer();setContentView(shell);if(getIntent().getBooleanExtra("show_app_settings",false)){getIntent().removeExtra("show_app_settings");showSettings();}else if(hasTvPair())showLive();else showTvSetup();
+        if (ReaderService.canStart(this)&&getSharedPreferences("settings", 0).getBoolean("enabled", false)) startForegroundService(new Intent(this, ReaderService.class));
     }
     private void buildDrawer(){
         drawerOverlay=new FrameLayout(this);drawerOverlay.setVisibility(View.GONE);shell.addView(drawerOverlay,new FrameLayout.LayoutParams(-1,-1));
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
         TextView brand=text("Freelight",28,Palette.INK);drawer.addView(brand);TextView hint=text(s("tagline"),14,Palette.SECONDARY);hint.setPadding(0,dp(5),0,dp(30));drawer.addView(hint);
         homeNavigation=button(s("home"),()->{showLive();closeMenu();});homeNavigation.setFocusableInTouchMode(true);drawer.addView(homeNavigation,new LinearLayout.LayoutParams(-1,dp(54)));
         Button bluetooth=button(s("bluetooth"),()->{showBluetooth();closeMenu();});LinearLayout.LayoutParams nav=new LinearLayout.LayoutParams(-1,dp(54));nav.topMargin=dp(10);drawer.addView(bluetooth,nav);
-        Button bridge=button("Hue Bridge",()->{showHue();closeMenu();});LinearLayout.LayoutParams bridgeLayout=new LinearLayout.LayoutParams(-1,dp(54));bridgeLayout.topMargin=dp(10);drawer.addView(bridge,bridgeLayout);
+        Button bridge=button(s("tv_setup"),()->{showTvSetup();closeMenu();});LinearLayout.LayoutParams bridgeLayout=new LinearLayout.LayoutParams(-1,dp(54));bridgeLayout.topMargin=dp(10);drawer.addView(bridge,bridgeLayout);
         Button appSettings=button(s("app_settings"),()->{showSettings();closeMenu();});LinearLayout.LayoutParams settingsLayout=new LinearLayout.LayoutParams(-1,dp(54));settingsLayout.topMargin=dp(10);drawer.addView(appSettings,settingsLayout);
         drawer.addView(new View(this),new LinearLayout.LayoutParams(-1,0,1));drawer.addView(button(s("close_menu"),this::closeMenu),new LinearLayout.LayoutParams(-1,dp(52)));
     }
@@ -81,7 +82,7 @@ public class MainActivity extends Activity {
     }
     @Override public void onBackPressed(){if(drawerOpen){closeMenu();return;}if(!livePage){showLive();menuButton.requestFocus();return;}super.onBackPressed();}
     @Override public boolean dispatchKeyEvent(KeyEvent event){if(event.getAction()==KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0&&event.getKeyCode()==KeyEvent.KEYCODE_MENU){if(drawerOpen)closeMenu();else openMenu();return true;}return super.dispatchKeyEvent(event);}
-    private void resetBulbPage(){stopDiscovery();bulbList=null;displayedFleet=null;bulbRows.clear();bleStatus=null;bleDevices=null;preview=null;readiness=null;content.removeAllViews();livePage=false;}
+    private void resetBulbPage(){tvStatus=null;pairButton=null;stopDiscovery();bulbList=null;displayedFleet=null;bulbRows.clear();bleStatus=null;bleDevices=null;preview=null;readiness=null;content.removeAllViews();livePage=false;}
     private Bitmap bulbPhoto(){if(bulbBitmap==null){BitmapFactory.Options options=new BitmapFactory.Options();options.inSampleSize=4;bulbBitmap=BitmapFactory.decodeResource(getResources(),getResources().getIdentifier("freelight_bulb_photo","drawable",getPackageName()),options);}return bulbBitmap;}
     private void showLive(){
         resetBulbPage();livePage=true;pageTitle.setText(s("home"));
@@ -100,7 +101,50 @@ public class MainActivity extends Activity {
         String current=getSharedPreferences("ui",0).getString("language","system");int selection=0;for(int i=0;i<LanguagePolicy.CODES.length;i++)if(LanguagePolicy.CODES[i].equals(current))selection=i+1;languages.setSelection(selection);body.addView(languages,new LinearLayout.LayoutParams(-1,dp(56)));
         TextView hint=text(s("language_hint"),15,Palette.SECONDARY);hint.setPadding(0,dp(16),0,dp(24));body.addView(hint);
         Button apply=button(s("apply"),()->{int choice=languages.getSelectedItemPosition();String code=choice==0?"system":LanguagePolicy.CODES[choice-1];getSharedPreferences("ui",0).edit().putString("language",code).apply();getIntent().putExtra("show_app_settings",true);recreate();});body.addView(apply,new LinearLayout.LayoutParams(-1,dp(54)));
+        LinearLayout extras=new LinearLayout(this);addButton(extras,button(s("privacy"),this::showPrivacy));addButton(extras,button(s("about"),this::showAbout));body.addView(extras);
+
     }
+
+    private boolean hasTvPair(){try{return TvCredentials.load(this)!=null;}catch(Exception e){return false;}}
+    private void showTvSetup(){
+        resetBulbPage();pageTitle.setText(s("tv_setup"));ScrollView scroll=new ScrollView(this);LinearLayout body=card();scroll.addView(body);content.addView(scroll,new LinearLayout.LayoutParams(-1,-1));
+        body.addView(text(s("tv_setup"),24,Palette.INK));TextView intro=text(s("tv_intro"),16,Palette.SECONDARY);intro.setPadding(0,dp(14),0,dp(16));body.addView(intro);
+        tvStatus=text("",17,Palette.ACCENT);body.addView(tvStatus);pairButton=button(hasTvPair()?s("tv_repair"):s("tv_pair"),this::beginTvPairing);LinearLayout.LayoutParams pp=new LinearLayout.LayoutParams(-1,dp(54));pp.topMargin=dp(18);body.addView(pairButton,pp);pairButton.setEnabled(!tvBusy);
+        TextView help=text(s("tv_begin_help"),14,Palette.SECONDARY);help.setPadding(0,dp(16),0,dp(8));body.addView(help);
+        if(hasTvPair()){
+            LinearLayout actions=new LinearLayout(this);addButton(actions,button(s("setup_connect_bulb"),this::showBluetooth));addButton(actions,button(s("reader_start"),()->withBluetooth(()->{})));addButton(actions,button(s("reader_stop"),()->startService(new Intent(this,ReaderService.class).setAction("STOP"))));body.addView(actions);
+            Button forget=button(s("tv_forget"),()->new AlertDialog.Builder(this).setTitle(s("tv_forget_title")).setMessage(s("tv_forget_help")).setNegativeButton(s("cancel"),null).setPositiveButton(s("tv_forget"),(d,w)->{cancelTvPairing();stopService(new Intent(this,ReaderService.class));getSharedPreferences("settings",0).edit().putBoolean("enabled",false).apply();TvCredentials.forget(this);tvMessage=null;showTvSetup();}).show());body.addView(forget,new LinearLayout.LayoutParams(-1,dp(52)));
+        }
+        renderTvStatus();
+    }
+    private void renderTvStatus(){if(tvStatus==null)return;String message=tvMessage;if(message==null){
+        if(!hasTvPair())message=s("tv_status_missing");
+        else if("connected".equals(ReaderService.connectionState)&&android.os.SystemClock.elapsedRealtime()-ReaderService.last<2000)message=s("tv_status_fresh");
+        else if("auth".equals(ReaderService.connectionState))message=s("tv_status_auth");
+        else message=s("tv_status_wait");
+    }if(!message.contentEquals(tvStatus.getText()))tvStatus.setText(message);}
+    private void cancelTvPairing(){tvGeneration++;tvBusy=false;if(tvPairing!=null){tvPairing.close();tvPairing=null;}if(pinDialog!=null){pinDialog.dismiss();pinDialog=null;}}
+    private void beginTvPairing(){
+        if(tvBusy)return;cancelTvPairing();final int generation=tvGeneration;final TvPairing session=new TvPairing();tvPairing=session;tvBusy=true;tvMessage=s("tv_pairing");if(pairButton!=null)pairButton.setEnabled(false);renderTvStatus();
+        jobs.execute(()->{try{session.begin();handler.post(()->{if(destroyed||generation!=tvGeneration){session.close();return;}showTvPin(session,generation);});}
+        catch(Exception e){session.close();handler.post(()->{if(destroyed||generation!=tvGeneration)return;tvBusy=false;tvMessage=s("tv_failed");if(pairButton!=null)pairButton.setEnabled(true);renderTvStatus();});}});
+    }
+    private void showTvPin(TvPairing session,int generation){
+        LinearLayout box=new LinearLayout(this);box.setOrientation(1);box.setPadding(dp(24),dp(8),dp(24),dp(12));box.addView(text(s("tv_pin_help"),16,Palette.INK));EditText pin=new EditText(this);pin.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_PASSWORD);pin.setSingleLine(true);pin.setHint(s("tv_pin_hint"));pin.setTextColor(Palette.INK);pin.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(4)});box.addView(pin,new LinearLayout.LayoutParams(-1,dp(54)));TextView error=text("",14,Palette.ACCENT);box.addView(error);
+        pinDialog=new AlertDialog.Builder(this).setTitle(s("tv_setup")).setView(box).setNegativeButton(s("cancel"),(d,w)->{cancelTvPairing();tvMessage=null;showTvSetup();}).setPositiveButton(s("tv_confirm"),null).create();pinDialog.setCanceledOnTouchOutside(false);
+        pinDialog.setOnCancelListener(d->{cancelTvPairing();tvMessage=null;showTvSetup();});pinDialog.setOnShowListener(d->{pin.requestFocus();Button confirm=pinDialog.getButton(AlertDialog.BUTTON_POSITIVE);confirm.setOnClickListener(v->{
+            String value=pin.getText().toString();if(!value.matches("[0-9]{4}")){error.setText(s("tv_pin_invalid"));return;}
+            if(session.remainingMillis()==0){error.setText(s("tv_expired"));confirm.setEnabled(false);return;}
+            confirm.setEnabled(false);pin.setEnabled(false);error.setText(s("tv_verifying"));
+            jobs.execute(()->{try{session.finish(getApplicationContext(),value);handler.post(()->{if(destroyed||generation!=tvGeneration)return;tvBusy=false;tvPairing=null;if(pinDialog!=null){pinDialog.dismiss();pinDialog=null;}tvMessage=s("tv_success");showTvSetup();handler.postDelayed(()->{if(!destroyed){tvMessage=null;renderTvStatus();}},5000);});}
+            catch(Exception e){handler.post(()->{if(destroyed||generation!=tvGeneration)return;error.setText(session.remainingMillis()==0?s("tv_expired"):s("tv_failed"));pin.setEnabled(true);confirm.setEnabled(session.remainingMillis()>0);});}});
+        });});pinDialog.show();
+    }
+    private void showPrivacy(){
+        resetBulbPage();pageTitle.setText(s("privacy"));ScrollView scroll=new ScrollView(this);LinearLayout body=card();scroll.addView(body);content.addView(scroll,new LinearLayout.LayoutParams(-1,-1));body.addView(text(s("privacy"),24,Palette.INK));TextView policy=text(s("privacy_body"),16,Palette.INK);policy.setPadding(0,dp(20),0,dp(20));body.addView(policy);body.addView(text(Privacy.CONTACT,14,Palette.SECONDARY));
+    }
+    private void showAbout(){new AlertDialog.Builder(this).setTitle("Freelight 0.12").setMessage(Privacy.LICENSE+"\n\n"+s("tv_intro")+"\n\n"+Privacy.CONTACT).setPositiveButton(s("close_menu"),null).show();}
+
     private void showHue() {
         resetBulbPage();pageTitle.setText("Hue Bridge"); networkButtons.clear();
         ScrollView scroll = new ScrollView(this); scroll.setFillViewport(true); LinearLayout body = card(); scroll.addView(body);
@@ -120,6 +164,7 @@ public class MainActivity extends Activity {
         content.addView(scroll, new LinearLayout.LayoutParams(-1, -1)); setBusy(busy);
     }
     private void withBluetooth(Runnable action) {
+        if(!hasTvPair()){showTvSetup();return;}
         String[] permissions=Build.VERSION.SDK_INT>=31?new String[]{"android.permission.BLUETOOTH_SCAN","android.permission.BLUETOOTH_CONNECT"}:new String[]{"android.permission.ACCESS_FINE_LOCATION"};
         for(String p:permissions)if(checkSelfPermission(p)!=0){permissionAction=action;requestPermissions(permissions,42);return;}
         if(ReaderService.fleet==null){startForegroundService(new Intent(this,ReaderService.class));handler.postDelayed(()->{if(!destroyed&&ReaderService.fleet!=null)action.run();},600);}else action.run();
@@ -253,6 +298,6 @@ public class MainActivity extends Activity {
     private void stopDiscovery() { handler.removeCallbacks(discoveryTimeout); if (discovery != null) { try { nsd.stopServiceDiscovery(discovery); } catch (Exception ignored) {} discovery = null; } }
     protected void onResume() { super.onResume(); handler.post(tick); }
     protected void onPause() { handler.removeCallbacks(tick); stopDiscovery(); super.onPause(); }
-    protected void onDestroy() { destroyed = true; stopDiscovery(); jobs.shutdownNow(); super.onDestroy(); }
-    private void render(){renderBle();renderBulbs();if(preview!=null)preview.invalidate();}
+    protected void onDestroy() { destroyed = true;cancelTvPairing(); stopDiscovery(); jobs.shutdownNow(); super.onDestroy(); }
+    private void render(){renderTvStatus();renderBle();renderBulbs();if(preview!=null)preview.invalidate();}
 }

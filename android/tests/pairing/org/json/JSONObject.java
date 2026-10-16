@@ -1,0 +1,4 @@
+package org.json;
+import java.util.*;
+/** Builder-only test double; intentionally does not simulate a JSON parser. */
+public class JSONObject {private final Map<String,Object> values=new LinkedHashMap<>();public JSONObject put(String k,Object v){values.put(k,v);return this;}public Object get(String k){if(!values.containsKey(k))throw new IllegalArgumentException(k);return values.get(k);}public JSONObject getJSONObject(String k){return (JSONObject)get(k);}public String getString(String k){return (String)get(k);}public String optString(String k){return (String)values.getOrDefault(k,"");}public long getLong(String k){return ((Number)get(k)).longValue();}public int getInt(String k){return ((Number)get(k)).intValue();}public int length(){return values.size();}public Iterator<String> keys(){return values.keySet().iterator();}}

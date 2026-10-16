@@ -1,93 +1,60 @@
-# Installation and setup
+# Installation and first-run setup
 
-## Before you begin
+Freelight 0.12 adds on-TV PIN pairing. Normal first-time setup no longer needs a computer, a typed IP address, a cloud account or an uploaded credential file.
 
-You need a Philips Android/Google TV that exposes the authenticated JointSpace v6 Ambilight API, a compatible Hue Bluetooth RGB bulb, ADB access to the TV, and a valid pairing response for **your own TV**. The tested combination is 65OLED810/12 + Hue LCA012.
+## Requirements
 
-TV pairing is not implemented in this app or its helper scripts. Obtain the pairing response through a compatible JointSpace pairing client that completes the TV’s on-screen PIN confirmation. Keep the full response locally; the fields Freelight reads are:
+- A compatible Philips Android/Google TV exposing JointSpace v6 and Ambilight color data. Tested reader hardware: Philips 65OLED810/12.
+- A compatible Hue Bluetooth RGB bulb. The controller currently accepts LCA012; other models, IKEA Matter/Thread and Bridge streaming are not supported.
+- The app installed on the TV. Store distribution is not configured yet; use a development APK for testing.
 
-```json
-{
-  "device": { "id": "YOUR_PAIRED_DEVICE_ID" },
-  "response": { "auth_key": "YOUR_TV_AUTH_KEY" }
-}
-```
+## First run
 
-These are placeholders, not working credentials. A Hue Bridge key or Bluetooth PIN cannot replace this TV pairing response. Do not reuse credentials from another TV.
+1. Open Freelight. An unpaired installation opens **TV connection**.
+2. Select **Pair this TV**. The app contacts only this device’s own local TV API; no manual IP is needed.
+3. Read the TV’s four-digit PIN and enter it into Freelight. If a TV overlay covers the app, return to Freelight without cancelling the TV pairing. Confirm before the PIN session expires.
+4. The app verifies authorization and Ambilight color access before saving the pair. An incorrect PIN, expired session, cancelled attempt or unsupported color API does not replace existing credentials.
+5. Choose **Add a Bluetooth bulb**, grant Bluetooth permissions, scan, select a compatible bulb, set its position/brightness, and choose **Save and connect**.
 
-## Install the development APK
+The physical TV’s PIN flow and firmware support must still be validated for each supported hardware/firmware combination. Do not claim universal Philips compatibility from successful compilation or simulated tests.
 
-Build the APK using [BUILDING.md](BUILDING.md). Enable developer options and debugging on the TV, then use the IP and port shown by the TV’s debugging screen:
+## TV connection controls
+
+Open **Menu → TV connection** to see whether fresh colors are arriving, start/stop synchronization, pair again or forget this TV. Re-pairing preserves an existing pair until the new one is fully validated. **Forget TV** asks for confirmation, stops the service and removes only TV pairing data; bulb registrations remain.
+
+The encrypted pairing file is private and excluded from Android backups. Updates retain the package ID and local data. Legacy private `files/pairing.json` is migrated only after encrypted storage has been successfully written. Keep your existing signing key for APK updates.
+
+## Bulb controls
+
+On Home, focus the room scene, use Left/Right to select a bulb and OK to open settings. Or scroll down to the bulb cards. Names, five positions and independent 0–4× brightness are supported.
+
+- **Start** enables automatic connection for a bulb.
+- **Stop** pauses the current session and restores its saved previous light state; wake may resume it.
+- **Disconnect** on the Bluetooth page disables automatic connection until Start is used.
+- Home leaves the UI while the foreground service continues.
+- **Stop synchronization** on the TV connection page, or Stop in the notification, disables the reader’s boot-start preference and stops the service.
+
+Use **Menu → App settings** to choose language, read privacy information or view the license/About screen.
+
+## Development installation
 
 ```sh
-# When wireless debugging requires pairing, use its separate pairing port:
 adb pair TV_IP:PAIRING_PORT
-
-# Use the connection port, which may differ from the pairing port:
 adb connect TV_IP:CONNECTION_PORT
-adb -s TV_IP:CONNECTION_PORT install -r android/build/Freelight-TV.apk
+adb -s TV_IP:CONNECTION_PORT install -r android/build/debug/Freelight-debug.apk
 ```
 
-Approve the TV’s authorization dialog. Do not assume the port is 5555. Replace each placeholder with your device’s current address. ADB connectivity is only needed for setup and development, not normal synchronization.
+Use the actual ports shown by wireless debugging; the pairing and connection ports can differ. Accept the TV’s authorization prompt. This ADB connection is for development installation only, not normal pairing or synchronization.
 
-Updates must use the same signing key as the installed app. A separately generated key cannot update an existing installation. Keep your original development key locally; do not uninstall a working installation just to resolve a signature mismatch, as uninstalling erases its stored settings and credentials.
-
-## Provision the TV credentials
-
-Keep the real pairing response outside the repository or under the ignored `private/` directory. From the repository root:
-
-```sh
-python3 android/tools/provision-tv.py \
-  --serial TV_IP:CONNECTION_PORT \
-  --credentials /absolute/path/to/your-tv-pairing.json
-```
-
-The helper validates the two required fields and writes a minimal pairing file directly into the app’s private files directory using `adb run-as`. It does not print the credentials or leave a copy in shared TV storage. It requires the debuggable development build and an authorized ADB connection. It does not restart or reset the app.
-
-Open Freelight after provisioning. If no reader service is running yet, opening the Bluetooth workflow and granting permissions starts it. If the reader was already waiting for credentials, its retry loop picks them up. Replacing credentials in a service that has already loaded a different pair requires restarting the app process; this is not a hot credential switch.
-
-## Connect a bulb
-
-1. Keep the bulb powered on and close enough for a reliable Bluetooth connection.
-2. Close other apps that may be actively connected to it. Put the bulb into a discoverable state using the controls available for your bulb/firmware. Do not factory-reset a working bulb just to try this app.
-3. Open **Menu → Bluetooth bulbs → Scan for bulbs** and grant the requested Bluetooth permissions.
-4. Select the bulb, choose **Add selected bulb**, enter an optional name, and explicitly choose its position. New bulbs have no position preselected.
-5. Set brightness and choose **Save and connect**. The tested default is 2×.
-
-Only the verified LCA012 model is currently accepted by the BLE controller. Successful Bluetooth discovery alone does not prove protocol compatibility.
-
-## Everyday controls
-
-On Home, use the room scene or a bulb’s **Settings** button to change its name, position or brightness. With a remote, focus the scene, use Left/Right to select a bulb, then OK to open its settings. The bulb cards are below the room scene; scroll down to reach them.
-
-| Control | Behavior |
-| --- | --- |
-| Start | Enables automatic connection and starts/resumes this bulb |
-| Stop | Pauses this session and restores its saved previous light state; wake may resume it |
-| Disconnect (Bluetooth page) | Disables automatic connection for this bulb until Start is used |
-| Start all / Stop all | Applies the corresponding action to every registered bulb |
-| Home on the remote | Leaves the UI; the foreground service continues |
-| Notification Stop action | Stops the reader service and disables its boot-start preference |
-
-Use **Menu → App settings → App language → Apply** to override the system language.
+The old `tools/provision-tv.py` is retained only for legacy/debug experiments. It is not part of the new-user workflow and cannot overwrite an encrypted pairing that the running app has already loaded. Use the in-app pairing controls instead.
 
 ## Troubleshooting
 
-| Symptom | Check |
-| --- | --- |
-| No TV colors | Own-TV credentials are provisioned; TV API is available; allow startup retries after a cold boot |
-| Authentication error | Pairing belongs to this TV and has not been revoked; placeholder values will not work |
-| Bulb is found but cannot connect | Model is LCA012, Bluetooth permission is granted, bulb is available and another controller is not occupying it |
-| Bulb does not follow video | Home shows connected/streaming; position and multiplier are set; TV’s Ambilight API is providing fresh data |
-| Slow cold-boot connection | TV firmware may start its local color API later than the app service |
-| Hue Bridge connects but no light sync | Bridge streaming is not implemented; use the tested BLE workflow |
-| IKEA bulb is not listed/controllable | Matter/Thread support is not implemented |
-| APK update signature mismatch | Use the same local signing key as the existing installation |
+- No PIN/service: verify Philips model/firmware compatibility and local API availability. Other Android TVs do not automatically expose Philips Ambilight.
+- Wrong/expired PIN: cancel and pair again. Your previous working pairing is preserved.
+- Authorization rejected or TV certificate changed: re-pair through the TV connection page.
+- Bulb cannot connect: check model, power, range, Bluetooth permissions and competing controllers; do not reset a working bulb just for discovery.
+- Cold-boot delay: the TV’s API may start later than the app; the reader retries automatically.
+- APK signature mismatch: use the original signing key. Do not uninstall a configured app merely to resolve a signing mismatch.
 
-Developer diagnostics:
-
-```sh
-adb -s TV_IP:CONNECTION_PORT shell dumpsys activity service local.ambilight.reader/.ReaderService
-```
-
-The `bulbs` array contains per-bulb state. Raw output may contain local addresses, Bluetooth identifiers and custom names. Share a redacted excerpt rather than the whole dump. It does not contain the TV authentication key, but a full bug report can still contain personal data.
+Diagnostics: `adb shell dumpsys activity service local.ambilight.reader/.ReaderService`. Redact IP/MAC addresses and custom names before sharing. Do not share TV keys, encrypted credential files or signing material.

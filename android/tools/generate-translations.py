@@ -1580,4 +1580,8 @@ Nätverkssökning är inte tillgänglig. Ange IP-adressen manuellt.
 %1$d ljuskanaler
 Freelight körs
 TV-färger läses lokalt''')
-if __name__=='__main__':write();print('Wrote',len(DATA),'languages,',len(KEYS),'strings each')
+if __name__=='__main__':
+    import runpy
+    extra=runpy.run_path(str(Path(__file__).with_name('setup-translations.py')))['DATA']
+    for code,strings in extra.items():DATA[code].update(strings)
+    write();print('Wrote',len(DATA),'languages,',len(DATA['en']),'strings each')

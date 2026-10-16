@@ -7,9 +7,11 @@
 
 Freelight is an open-source, experimental Android TV application that reads a Philips TV’s local Ambilight color data and sends matching colors to compatible Philips Hue bulbs over Bluetooth. It runs on the TV itself: after setup, no Mac, PC, Hue Bridge, or cloud service is required for color synchronization.
 
-**Current version: 0.11 · Tested TV: Philips 65OLED810/12 · Tested bulb: Hue LCA012 (RGB).** This is a hardware-specific project, not a universal replacement for Ambilight + Hue. Other TVs, firmware versions, and Hue models need testing.
+**Current version: 0.12 · Tested TV: Philips 65OLED810/12 · Tested bulb: Hue LCA012 (RGB).** This is a hardware-specific project, not a universal replacement for Ambilight + Hue. Other TVs, firmware versions, and Hue models need testing.
 
 ![Freelight room view with a connected bulb](docs/screenshots/home.png)
+
+Screenshots show the previously tested 0.11 interface; new 0.12 onboarding screenshots will be added after physical-TV validation.
 
 ## What it does
 
@@ -54,17 +56,17 @@ Upper corner positions blend the relevant upper side region and top region with 
 | Hue LCA012 RGB over Bluetooth | Color tracking, previous-state restore, standby/wake and restart recovery tested |
 | Other Hue bulbs | Unverified; current controller explicitly accepts the tested LCA012 model |
 | Multiple bulbs | Independent sessions implemented and tested with simulated controllers; simultaneous operation with multiple physical bulbs is unverified |
-| Hue Bridge | Discovery, pairing and Entertainment area selection UI only; DTLS Entertainment streaming is **not implemented** |
+| Hue Bridge | Streaming is not implemented; the incomplete Bridge workflow is hidden from the UI |
 | IKEA / Matter / Thread | Not implemented |
 | Screen/video capture | Not used; source compatibility depends on what the TV exposes through its Ambilight API |
 
-There is currently **no TV pairing wizard**. Setup requires an existing, valid JointSpace v6 pairing response from your own TV and an ADB provisioning step. An APK alone is not a complete first-run setup. See [installation](docs/SETUP.md).
+Version 0.12 adds **on-TV PIN pairing** and a TV connection page. New users do not need to transfer credentials with ADB. This new flow is covered by protocol/transaction tests; its physical-TV onboarding and upgrade validation is still pending. See [setup](docs/SETUP.md) and [store readiness](docs/STORE-READINESS.md).
 
 ## Getting started
 
 1. Check that your TV exposes the authenticated `/6/ambilight/measured` endpoint and that your bulb is compatible.
 2. [Build a development APK](docs/BUILDING.md). This source package does not include a prebuilt release APK.
-3. Install it using ADB and [provision your own TV pairing file](docs/SETUP.md#provision-the-tv-credentials).
+3. Install the development APK, then [pair this TV using its on-screen PIN](docs/SETUP.md#first-run).
 4. Open **Freelight → Bluetooth bulbs**, grant the requested Bluetooth permissions, scan for your bulb, and choose **Add selected bulb**.
 5. Choose its position and brightness, then **Save and connect**.
 
@@ -86,9 +88,9 @@ The default is the TV’s system language; unsupported languages fall back to En
 
 Color synchronization runs locally. The Android app has no analytics or cloud account integration. The latest RGB frame and bounded diagnostic buffers live in RAM; it does not continuously save frames or screenshots to the TV.
 
-Small persistent settings include TV credentials, bulb addresses/names, per-bulb preferences, saved previous light states, and optional Hue Bridge credentials. App backup is disabled. The current local TV TLS connection accepts the TV’s self-signed certificate without certificate verification. Use this development app on a trusted local network.
+TV credentials use device-bound AES-GCM encryption and a private no-backup file. Small settings include bulb addresses/names, per-bulb preferences, saved previous light states and language. API connections are limited to this TV’s own interfaces. A local certificate fingerprint is pinned after successful pairing, or the first authenticated read for a legacy installation. See the [privacy policy](docs/PRIVACY.md).
 
-The build is currently debuggable so credentials can be provisioned with ADB `run-as`. Pairing files and signing keys are deliberately excluded from this source package. Do not publish your own credentials or raw diagnostic dumps.
+Debug and non-debuggable release builds are separate. The release pipeline produces a validated AAB, optionally signed with your own upload key. Pairing files and signing keys are excluded from source. No store listing, production signing setup or Play review is completed yet.
 
 ## Development
 
@@ -100,7 +102,7 @@ android/
   res/                        Drawables, theme and 18 language catalogs
   tests/                      Color, position, geometry and fleet tests
   tools/                      Translation generator and ADB provisioning
-  build.sh                    Development APK build and signing
+  build.sh                    Debug APK and release APK/AAB builds
 assets/                       Editable Freelight logo
 docs/                         Setup, build, architecture and screenshots
 ```
@@ -108,6 +110,8 @@ docs/                         Setup, build, architecture and screenshots
 - [Build and test instructions](docs/BUILDING.md)
 - [Installation and troubleshooting](docs/SETUP.md)
 - [Architecture and implementation limits](docs/ARCHITECTURE.md)
+- [Privacy policy](docs/PRIVACY.md)
+- [Store readiness and pending device tests](docs/STORE-READINESS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Sharing and release preparation](docs/RELEASING.md)
 
